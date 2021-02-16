@@ -67,7 +67,12 @@ class RegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => Hash::make($data['password']),
+            'password' => bcrypt($data['password']),
         ]);
+
+        // Provide newly created users with a role
+        $user->roles()->attach(\App\Models\Role::where('name', 'user')->first());
+
+        return $user;
     }
 }
