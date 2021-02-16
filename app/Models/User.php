@@ -67,4 +67,9 @@ class User extends Authenticatable
     {
         return (bool) $this->roles()->where('name', $role)->first();
     }
+
+    // One-to-many rel - user can make unlimited posts
+    public function posts() {
+        return $this->hasMany(Post::class);
+    }
 }
