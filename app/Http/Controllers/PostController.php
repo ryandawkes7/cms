@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use App\Http\Resources\PostResource;
 
 class PostController extends Controller
 {
@@ -50,13 +51,41 @@ class PostController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * Validates and allows for creation of new posts
      *
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        // Validator for post creation
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required',
+            'user_id' => 'required',
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        // Create new instance from Post object
+        $post = new Post;
+
+        // Conditional image checker
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = str_slug($request->title).'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/uploads/posts');
+            $imagePath = $destinationPath . "/" . $name;
+            $image->move($destinationPath, $name);
+            $post->image = $name;
+        }
+
+        // Attach relevant user info to post
+        $post->user_id = $request->user_id;
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->save();
+
+        return new PostResource($post);
     }
 
     /**

@@ -8,6 +8,7 @@ class PostResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
+     * Allows for retrieval and returns JSON-formatted post data
      *
      * @param  \Illuminate\Http\Request  $request
      * @return array
