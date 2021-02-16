@@ -19,4 +19,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// All posts
+Route::get('/', 'PostController@all');
+
+// Home
+Route::get('/home', 'HomeController@index')->name('home');
+
+// Single post
+Route::get('/posts/{post}', 'PostController@single');
