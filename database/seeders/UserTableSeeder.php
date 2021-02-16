@@ -18,8 +18,8 @@ class UserTableSeeder extends Seeder
         // Seed regular user criteria
         $user = new User;
         $user->name = 'Regular User';
-        $user->email = 'testing@gmail.com';
-        $user->password = bcrypt('samuel1234');
+        $user->email = 'reg@mail.co';
+        $user->password = bcrypt('password');
         $user->save();
         $user->roles()->attach(Role::where('name', 'user')->first());
 
